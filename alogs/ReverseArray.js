@@ -13,8 +13,8 @@ function reverseArray() {
 		i++;
 		arrayLengthIndex--;
 	}
-
 	console.log(array);
 }
 
+// run
 reverseArray();
