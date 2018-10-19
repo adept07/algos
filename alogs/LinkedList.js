@@ -29,10 +29,6 @@ MyLinkedList.prototype.add = function(value) {
 	} else {
 		_temp = _head.nextRef;
 		
-		/*if (_temp == null) {
-			_temp.nextRef = new Node(value);
-		}*/
-
 		while (_temp != null) {
 			if (isEmpty(_temp.nextRef)) {
 				_temp.nextRef = new Node(value);
@@ -41,11 +37,108 @@ MyLinkedList.prototype.add = function(value) {
 				_temp = _temp.nextRef;
 			}
 		}
-
-		
-		//console.log('node added to the end');
 	}
-}
+};
+
+MyLinkedList.prototype.get = function(position) {
+	if (isEmpty(this.head)) {
+		console.log('List is empty');
+		return -1;
+	}
+
+	var current = this.head,
+		counter = 0;
+	
+	while (current != null && counter < position) {
+		current = current.nextRef;
+		counter++;
+	}
+	
+	if (isEmpty(current)) {
+		return -1
+	} else {
+		return current.data;
+	}
+};
+
+MyLinkedList.prototype.addAtIndex = function(position, value) {
+	if (isEmpty(value)) {
+		console.log('Value is empty, nothing added');
+		return;
+	}
+	
+	if (isEmpty(position) || parseInt(position, 10) < 0) {
+		console.log('position is empty, nothing added');
+		return;
+	}
+
+	var current = this.head,
+		position = parseInt(position, 10),
+		counter = 0,
+		prev;
+	
+	if (position === 0) { // replace head;
+		var temp = this.head;
+		this.head = new Node(value, temp);
+	} else {
+		while (current != null && counter < position) {
+			prev = current;
+			current = current.nextRef;
+			counter++;
+		}
+		
+		prev.nextRef = new Node(value, current);
+	}
+	
+};
+
+MyLinkedList.prototype.addAtHead = function(value) {
+	if (isEmpty(this.head)) {
+		this.head = new Node(value, null);
+	} else if (!isEmpty(value)) {
+		var temp = this.head;
+		this.head = new Node(value, temp);
+	}
+};
+
+MyLinkedList.prototype.addAtTail = function(val) {
+    var current = this.head,
+    	prev;
+    
+    while (current != null) {
+    	prev = current;
+    	current = current.nextRef;
+    }
+
+    if (!isEmpty(prev)) {
+    	prev.nextRef = new Node(val, null); 
+    }
+};
+
+/**
+ * Delete the index-th node in the linked list, if the index is valid. 
+ * @param {number} index
+ * @return {void}
+ */
+MyLinkedList.prototype.deleteAtIndex = function(index) {
+    if (isEmpty(index)) {
+    	return;
+    }
+
+    var current = this.head,
+    	counter = 0,
+    	prev = current;
+    
+    
+    while (counter < index) {
+    	prev = current;
+    	current = current.nextRef;
+    	counter++;
+    }
+    
+    prev.nextRef = current.nextRef;
+
+};
 
 MyLinkedList.prototype.displayList = function() {
 	if (isEmpty(this.head)) {
@@ -68,10 +161,40 @@ MyLinkedList.prototype.displayList = function() {
 
 		console.log(arr.join(' '));
 	}
-}
+};
 
-var headNode = new Node(100);
-var list = new MyLinkedList(headNode);
+
+MyLinkedList.prototype.displayWrapper = function(extraStr) {
+	extraStr = extraStr || '';
+	console.log('----------------calling display-----------------' + extraStr);
+	this.displayList();
+	console.log('----------------end of display-----------------' + extraStr);
+};
+
+/*["MyLinkedList","addAtHead","addAtTail","addAtIndex","get","deleteAtIndex","get"]
+[[],[1],[3],[1,2],[1],[1],[1]]*/
+
+//var headNode = new Node(100);
+var list = new MyLinkedList();
+
+list.addAtHead(1);
+
+list.addAtTail(3);
+
+list.addAtIndex(1,2);
+
+
+list.displayWrapper('insert');
+//list.get(1);
+
+list.deleteAtIndex(1);
+
+//list.get(1);
+
+list.displayWrapper('afer delete');
+
+
+/*list.addAtHead(100);
 
 list.add(200);
 list.add(300);
@@ -83,6 +206,25 @@ list.add(800);
 list.add(900);
 list.add(1000);
 
-console.log('----------------calling display-----------------');
-list.displayList();
-console.log('----------------end of display-----------------');
+
+list.displayWrapper();
+
+console.log('----------------Node at position-----------------');
+console.log(list.get(10));
+
+list.addAtIndex(9, 333);
+list.displayWrapper();
+
+list.addAtHead(null);
+list.displayWrapper();
+
+
+list.addAtTail(1);
+list.displayWrapper('insert at tail');
+
+list.deleteAtIndex(2);
+list.displayWrapper('after delete');
+
+*/
+
+
