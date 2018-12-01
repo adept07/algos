@@ -1,6 +1,5 @@
 /**
- * @param {string} s
- * @return {number}
+ * finds length of a substring without repeating characters
  */
 var lengthOfLongestSubstring = function(s) {
     var map = {},
