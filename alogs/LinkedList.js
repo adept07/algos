@@ -41,28 +41,40 @@ MyLinkedList.prototype.add = function(value) {
 };
 
 MyLinkedList.prototype.get = function(position) {
-	if (isEmpty(this.head)) {
+	/*if (isEmpty(this.head)) {
 		console.log('List is empty');
 		return -1;
-	}
+	}*/
+    //debug
+   // var str = 'headValue: ' + this.head.data + ' pos1:' + this.head.nextRef;
+   // return str;
 
 	var current = this.head,
 		counter = 0;
 	
+    if (position === 0) {
+        
+        if (isEmpty(current)) {
+            return -1;
+        }
+
+        return current.data;
+    }
+    
 	while (current != null && counter < position) {
 		current = current.nextRef;
 		counter++;
 	}
 	
 	if (isEmpty(current)) {
-		return -1
+		return -1;
 	} else {
-		return current.data;
+		return current.data
 	}
 };
 
 MyLinkedList.prototype.addAtIndex = function(position, value) {
-	if (isEmpty(value)) {
+	/*if (isEmpty(value)) {
 		console.log('Value is empty, nothing added');
 		return;
 	}
@@ -70,10 +82,10 @@ MyLinkedList.prototype.addAtIndex = function(position, value) {
 	if (isEmpty(position) || parseInt(position, 10) < 0) {
 		console.log('position is empty, nothing added');
 		return;
-	}
+	}*/
 
 	var current = this.head,
-		position = parseInt(position, 10),
+		//position = parseInt(position, 10),
 		counter = 0,
 		prev;
 	
@@ -87,7 +99,10 @@ MyLinkedList.prototype.addAtIndex = function(position, value) {
 			counter++;
 		}
 		
-		prev.nextRef = new Node(value, current);
+        if ( prev ) {
+            prev.nextRef = new Node(value, current);    
+        }
+		
 	}
 	
 };
@@ -130,14 +145,39 @@ MyLinkedList.prototype.deleteAtIndex = function(index) {
     	prev = current;
     
     
-    while (counter < index) {
+    while (counter < index && current != null) {
     	prev = current;
     	current = current.nextRef;
     	counter++;
     }
     
-    prev.nextRef = current.nextRef;
+    if (current != null) {
+        prev.nextRef = current.nextRef;    
+    }
+    
 
+};
+MyLinkedList.prototype.displayList = function() {
+	if (isEmpty(this.head)) {
+		console.log('List is empty');
+	} else {
+		var temp = this.head.nextRef,
+			arr = [];
+
+		arr.push(this.head.data);
+		
+		if (isEmpty(temp)) {
+			console.log(arr.join(' '));
+			return;
+		}
+
+		while (temp != null) {
+			arr.push(temp.data);
+			temp = temp.nextRef
+		}
+
+		console.log(arr.join(' '));
+	}
 };
 
 MyLinkedList.prototype.displayList = function() {
@@ -163,14 +203,6 @@ MyLinkedList.prototype.displayList = function() {
 	}
 };
 
-
-MyLinkedList.prototype.displayWrapper = function(extraStr) {
-	extraStr = extraStr || '';
-	console.log('----------------calling display-----------------' + extraStr);
-	this.displayList();
-	console.log('----------------end of display-----------------' + extraStr);
-};
-
 /*["MyLinkedList","addAtHead","addAtTail","addAtIndex","get","deleteAtIndex","get"]
 [[],[1],[3],[1,2],[1],[1],[1]]*/
 
@@ -179,19 +211,23 @@ var list = new MyLinkedList();
 
 list.addAtHead(1);
 
-list.addAtTail(3);
+//list.addAtTail(3);
 
 list.addAtIndex(1,2);
 
 
-list.displayWrapper('insert');
+list.displayWrapper('add at index');
+
+
+console.log(list.get(1));
+console.log(list.get(0));
+console.log(list.get(2));
+
+//list.displayWrapper('get(1)');
+//list.deleteAtIndex(1);
+
 //list.get(1);
 
-list.deleteAtIndex(1);
-
-//list.get(1);
-
-list.displayWrapper('afer delete');
 
 
 /*list.addAtHead(100);
